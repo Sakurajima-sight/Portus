@@ -1,0 +1,24 @@
+- owner = activity_owner(activity)
+- action = activity_action(owner, "removed")
+
+li
+  .activitie-container
+    .activity-type.remove-member-team
+      i.fa.fa-user-times
+    .user-image
+      = user_image_tag(activity.owner)
+    .description
+      h6
+        strong
+          - if activity.recipient.is_a?(User)
+            = "#{owner} #{action} user '#{activity.recipient.display_username}' "
+          - elsif activity.owner == activity.recipient
+            = "#{owner} #{action} itself "
+          - else
+            = "#{owner} #{action} user '#{activity.parameters[:team_user]}' "
+        = "from the "
+        = link_to activity_team(activity), activity.trackable
+        |  team
+      small
+        i.fa.fa-clock-o
+        = activity_time_tag activity.created_at

@@ -1,0 +1,15 @@
+- repo_name = activity.parameters[:repository_name].presence || activity.trackable.name
+- namespace_name = activity.parameters[:namespace_name].presence || activity.trackable&.namespace.clean_name
+- tag_name = activity.parameters[:tag_name].presence || activity.recipient&.name
+- owner = activity_owner(activity)
+- created_at = activity.created_at
+
+- unless activity.trackable.nil?
+  - if activity.recipient.nil?
+    - if activity.parameters[:tag_name].nil?
+      = CSV.generate_line(['repository', "#{namespace}/#{repo_name}", 'delete tag', '-', owner, created_at, "-"])
+    - else
+      = CSV.generate_line(['repository',
+          "#{namespace_name}/#{repo_name}:#{tag_name}", 'delete tag', '-', owner, created_at, "-"])
+  - else
+    = CSV.generate_line(['repository', "#{namespace_name}/#{repo_name}:#{tag_name}", 'delete tag', '-', owner, created_at, "-"])

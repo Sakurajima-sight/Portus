@@ -1,0 +1,20 @@
+li
+  .activitie-container
+    .activity-type.repo-deleted
+      i.fa.fa-ship
+    .user-image
+      = user_image_tag(activity.owner)
+    .description
+      h6
+        strong
+          = " #{activity_owner(activity)} deleted "
+        - if activity.parameters[:repository_name]
+          = render_namespace_name(activity)
+          = "/#{activity.parameters[:repository_name]}"
+        - else
+          = "a repository under "
+          = render_namespace_name(activity)
+          = " namespace"
+      small
+        i.fa.fa-clock-o
+        = activity_time_tag activity.created_at

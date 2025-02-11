@@ -1,0 +1,50 @@
+language: ruby
+sudo: required
+dist: trusty
+rvm:
+  - 2.6.2
+cache: bundler
+
+install:
+  - chmod +x bin/ci/install.sh && ./bin/ci/install.sh
+
+before_script:
+  - chmod +x bin/ci/before_script.sh && ./bin/ci/before_script.sh
+
+script:
+  - chmod +x bin/ci/run.sh && ./bin/ci/run.sh
+
+after_script:
+  - chmod +x bin/ci/after_script.sh && ./bin/ci/after_script.sh
+
+env:
+  global:
+    # OSC_CREDENTIALS are kept secret
+    # In order to update them, run:
+    #   travis encrypt OSC_CREDENTIALS=user:password
+    # more info at: http://docs.travis-ci.com/user/environment-variables/#Secure-Variables
+    - OBS_REPO=Virtualization:containers:Portus
+    - OBS_BRANCH=master
+    - secure: "AmbAcW+pgKDcwdYILHqKYOsFldp8d9IqvJu9hofIskwaiepAPKD0ezrNLQ9ZxRy3L7JgZTV+15BuSJRHTffN0z5xuoR113Vgh441LHYWE7qbKx6s+Zxtz6MKjYNVILcY77B+k9v52pxcf7rtQpBkV1VJaRZlAApGxXDl4rgHH8s="
+
+    # DB options for both adapters and Travis.
+    - PORTUS_DB_USERNAME=travis
+
+    # Make codeclimeate happy
+    - CC_TEST_REPORTER_ID=portusunittest
+
+  matrix:
+    - PORTUS_CI=integration PROFILES=clair
+    - PORTUS_CI=integration PROFILES=ldap
+    - PORTUS_DB_ADAPTER=mysql2 PORTUS_CI=unit
+    - PORTUS_DB_ADAPTER=postgresql PORTUS_CI=unit
+
+after_success:
+  - packaging/suse/package_and_push_to_obs.sh
+
+addons:
+  code_climate:
+    repo_token: 18a0cf6c35e0c801678f12f444051c33e0390ce0efa91ec06a2aa5068b10c19e
+  mariadb: '10.2'
+  postgresql: '9.6'
+  chrome: stable

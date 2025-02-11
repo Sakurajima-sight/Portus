@@ -1,0 +1,149 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://registry.test.lan/v2/foo/busybox/manifests/1.0.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.docker.distribution.manifest.v2+json
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Docker-Distribution-Api-Version:
+      - registry/2.0
+      Www-Authenticate:
+      - Bearer realm="http://portus.test.lan/v2/token",service="registry.test.lan",scope="repository:foo/busybox:pull"
+      X-Content-Type-Options:
+      - nosniff
+      Date:
+      - Thu, 10 Jan 2019 15:29:17 GMT
+      Content-Length:
+      - '154'
+    body:
+      encoding: UTF-8
+      string: '{"errors":[{"code":"UNAUTHORIZED","message":"authentication required","detail":[{"Type":"repository","Class":"","Name":"foo/busybox","Action":"pull"}]}]}
+
+'
+    http_version:
+  recorded_at: Thu, 10 Jan 2019 15:29:17 GMT
+- request:
+    method: get
+    uri: http://portus.test.lan/v2/token?account=flavio&scope=repository:foo/busybox:pull&service=registry.test.lan
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic dml0b3JhdmVsaW5vOnZpdG9yMTIz
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Vary:
+      - Accept-Encoding
+      Etag:
+      - W/"e68fec242ce0f1817e5fdf4e9af45bd8"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Set-Cookie:
+      - _portus_session=QWhiWEQ1ZXdGZ21uYk9RY2UzaThacC9XWThKbnVhZ2YzMHlKNnluM1I3UEYwSkZtZmg3b1ZkbkNMVXQxMkZMMlhVS2wxNkVPWTdiZXlCOGExMVZqTkE9PS0tc1lUQVhFQ2dZVTJBdGV2L2FwcmRJUT09--1163a9ace0a7c815e7f148f3c8ac352efb32817b;
+        path=/; HttpOnly
+      X-Request-Id:
+      - dbd3401e-17c9-4746-a975-6c32104154ba
+      X-Runtime:
+      - '0.597276'
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: ASCII-8BIT
+      string: '{"token":"eyJhbGciOiJSUzI1NiIsImtpZCI6IlBUV1Q6Rk5KRTo3VFc3OlVMSTc6RFpRQTpKSkpJOlJESlE6Mk03NjpIRDZHOlpSU0M6VlBJRjpPNUJVIn0.eyJpc3MiOiIxNzIuMTcuMC4xIiwic3ViIjoidml0b3JhdmVsaW5vIiwiYXVkIjoiMTcyLjE3LjAuMTo1MDAwIiwiaWF0IjoxNTQ3MTM0MTU4LCJuYmYiOjE1NDcxMzQxNTMsImV4cCI6MTU0NzEzNTA1OCwianRpIjoiN2RGTkV6QWJORlRHalM3bVVKRjNlbzJZYkZ0TFJtR1JRQzFqbm42dEF1IiwiYWNjZXNzIjpbeyJ0eXBlIjoicmVwb3NpdG9yeSIsIm5hbWUiOiJmb28vYnVzeWJveCIsImFjdGlvbnMiOlsicHVsbCJdfV19.cOgx94rSfXi2Gd2RDT2KrGJS9JHRxvj9S1p2jIR4mr6JxKCHW3LaB88HUXRDt0HFklry0IKjY2zYIN1m-dUySlz0wk6ug5pdSjIj6Fgyn8TrqZ3iUG4KJCgUHgNp4UO5o5XrpmOxxGU3zGrc48WOKC1DxjKGt-cizOQNZ_RCEvE1b5_FWr_pGtN_fLjibBZk14cQpi8QbBgu5TssK-w-BVblxf_Fl6VEABPVFPWewfiySo4IOn-6RFlZFIs95Q-xX_mVczoy5CuMvt2WmUojs0vT9bPfP_P8CJ0PxakQqKuR-1ZRx5r23FgPVb52bOIUkB1kEJRJmaPoWa4nHYzwWjatI_AgBGvtGCNYzejyZUNSo6W-vXny4BZdOaouZ2q3jbbUseGJv1P6VfYUPxym9hfL26r_uC6_W2yFtpvZV1N1e1UbgeER153ClKd7IRQBHCTjSURSph6TNJH-OzONbQNGeMP9AeETPSKMxz0qTeOKzMOLVX26cUYbkV85Za5OxbuK4J9QgnpspoFbOPIo89Elv4BfgXWAcZd_5E9Pn6qvzJ4voAlJ6ihGMgUVtkbUwVifwoBLLn0w_C0uiQlSeZGDhg_gChRLNm5ncdGRxdgipfZKZTapfHvSYhu_vcTOZV2qjHPcmujl73PcPKniEUyHem4dkWjDlFxbLmWr5go","expires_in":900,"issued_at":"2019-01-10T15:29:18+00:00"}'
+    http_version:
+  recorded_at: Thu, 10 Jan 2019 15:29:18 GMT
+- request:
+    method: get
+    uri: http://registry.test.lan/v2/foo/busybox/manifests/1.0.0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.docker.distribution.manifest.v2+json
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlBUV1Q6Rk5KRTo3VFc3OlVMSTc6RFpRQTpKSkpJOlJESlE6Mk03NjpIRDZHOlpSU0M6VlBJRjpPNUJVIn0.eyJpc3MiOiIxNzIuMTcuMC4xIiwic3ViIjoidml0b3JhdmVsaW5vIiwiYXVkIjoiMTcyLjE3LjAuMTo1MDAwIiwiaWF0IjoxNTQ3MTM0MTU4LCJuYmYiOjE1NDcxMzQxNTMsImV4cCI6MTU0NzEzNTA1OCwianRpIjoiN2RGTkV6QWJORlRHalM3bVVKRjNlbzJZYkZ0TFJtR1JRQzFqbm42dEF1IiwiYWNjZXNzIjpbeyJ0eXBlIjoicmVwb3NpdG9yeSIsIm5hbWUiOiJmb28vYnVzeWJveCIsImFjdGlvbnMiOlsicHVsbCJdfV19.cOgx94rSfXi2Gd2RDT2KrGJS9JHRxvj9S1p2jIR4mr6JxKCHW3LaB88HUXRDt0HFklry0IKjY2zYIN1m-dUySlz0wk6ug5pdSjIj6Fgyn8TrqZ3iUG4KJCgUHgNp4UO5o5XrpmOxxGU3zGrc48WOKC1DxjKGt-cizOQNZ_RCEvE1b5_FWr_pGtN_fLjibBZk14cQpi8QbBgu5TssK-w-BVblxf_Fl6VEABPVFPWewfiySo4IOn-6RFlZFIs95Q-xX_mVczoy5CuMvt2WmUojs0vT9bPfP_P8CJ0PxakQqKuR-1ZRx5r23FgPVb52bOIUkB1kEJRJmaPoWa4nHYzwWjatI_AgBGvtGCNYzejyZUNSo6W-vXny4BZdOaouZ2q3jbbUseGJv1P6VfYUPxym9hfL26r_uC6_W2yFtpvZV1N1e1UbgeER153ClKd7IRQBHCTjSURSph6TNJH-OzONbQNGeMP9AeETPSKMxz0qTeOKzMOLVX26cUYbkV85Za5OxbuK4J9QgnpspoFbOPIo89Elv4BfgXWAcZd_5E9Pn6qvzJ4voAlJ6ihGMgUVtkbUwVifwoBLLn0w_C0uiQlSeZGDhg_gChRLNm5ncdGRxdgipfZKZTapfHvSYhu_vcTOZV2qjHPcmujl73PcPKniEUyHem4dkWjDlFxbLmWr5go
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Length:
+      - '527'
+      Content-Type:
+      - application/vnd.docker.distribution.manifest.v2+json
+      Docker-Content-Digest:
+      - sha256:bbb143159af9eabdf45511fd5aab4fd2475d4c0e7fd4a5e154b98e838488e510
+      Docker-Distribution-Api-Version:
+      - registry/2.0
+      Etag:
+      - '"sha256:bbb143159af9eabdf45511fd5aab4fd2475d4c0e7fd4a5e154b98e838488e510"'
+      X-Content-Type-Options:
+      - nosniff
+      Date:
+      - Thu, 10 Jan 2019 15:29:18 GMT
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+           "schemaVersion": 2,
+           "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+           "config": {
+              "mediaType": "application/vnd.docker.container.image.v1+json",
+              "size": 1497,
+              "digest": "sha256:3a093384ac306cbac30b67f1585e12b30ab1a899374dabc3170b9bca246f1444"
+           },
+           "layers": [
+              {
+                 "mediaType": "application/vnd.docker.image.rootfs.diff.tar.gzip",
+                 "size": 755724,
+                 "digest": "sha256:57c14dd66db0390dbf6da578421c077f6de8e88edd0815b4caa94607ba5f4c09"
+              }
+           ]
+        }
+    http_version:
+  recorded_at: Thu, 10 Jan 2019 15:29:18 GMT
+recorded_with: VCR 4.0.0

@@ -1,0 +1,25 @@
+##
+# Go
+
+Substitute: golang go
+Prefer: go
+Prefer: go-md2man
+
+##
+# Ruby
+
+%define rb_default_ruby        ruby26
+%define rb_default_ruby_suffix ruby2.6
+%define rb_default_ruby_abi    ruby:2.6.0
+
+%define _with_ruby26 1
+Macros:
+%rb_default_ruby        ruby26
+%rb_default_ruby_suffix ruby2.6
+%rb_default_ruby_abi    ruby:2.6.0
+
+%_with_ruby26 1
+:Macros
+
+Prefer: rubygem(ruby:2.6.0:gem2rpm)
+Prefer: ruby2.6-rubygem-gem2rpm

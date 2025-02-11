@@ -1,0 +1,62 @@
+.row
+  .col-sm-6
+    .panel.panel-default
+      .panel-heading
+        h5
+          ' Public Profile
+      .panel-body
+        = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'profile', id: 'edit-public-profile' }) do |f|
+          - unless current_user.email?
+            p
+              | Your profile is not complete. Please, submit an email to be used in this Portus instance.
+          .form-group class=(current_user.email? ? "" : "has-error")
+            .field
+              - if current_user.email?
+                = f.label :email
+              - else
+                = f.label :email, "Email", class: "control-label", title: "This profile is not complete. You need to provide an email first"
+              = f.email_field(:email, class: 'form-control', required: true, autofocus: true)
+
+          - if APP_CONFIG.enabled?("display_name")
+            .form-group
+              .field
+                = f.label :display_name
+                = f.text_field(:display_name, class: 'form-control')
+
+          .form-group
+            .actions
+              = f.submit('Save', class: 'btn btn-primary', disabled: true)
+
+    <app-tokens-wrapper :user-id="#{current_user.id}" :app-tokens-ref="#{@app_tokens_serialized}" :max-tokens="#{User::APPLICATION_TOKENS_MAX}"></app-tokens-wrapper>
+
+    - if current_user.email?
+      - unless current_user.admin? && @admin_count == 1
+        <disable-account-panel :user-id="#{current_user.id}"></disable-account-panel>
+
+  - if APP_CONFIG.disabled?("ldap")
+    - if current_user.email?
+      .col-sm-6
+        .panel.panel-default
+          .panel-heading
+            h5
+              ' Change Password
+          .panel-body
+            = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'password' }) do |f|
+              - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+                div
+                  Currently waiting confirmation for: #{resource.unconfirmed_email}
+              .form-group
+                .field
+                  = f.label :current_password, class: 'control-label'
+                  = f.password_field :current_password, autocomplete: 'off', class: 'form-control'
+                  br
+                .field
+                  = f.label :password, class: 'control-label'
+                  = f.password_field :password, autocomplete: 'off', class: 'form-control'
+                  br
+                .field
+                  = f.label :password_confirmation, class: 'control-label'
+                  = f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control'
+              .form-group
+                .actions
+                  = f.submit('Save', class: 'btn btn-primary', disabled: true)

@@ -1,0 +1,21 @@
+li
+  .activitie-container
+    .activity-type.create-namespace
+      i.fa.fa-ship
+    .user-image
+      = user_image_tag(activity.owner)
+    .description
+      h6
+        strong
+          = "#{activity_owner(activity)} created "
+        - if activity.trackable.respond_to?(:orphan?) && activity.trackable.orphan?
+          = render_namespace_name(activity, true)
+          |  namespace automatically (orphan)
+        - else
+          = render_namespace_name(activity, true)
+          = " namespace under "
+          = render_namespace_team(activity)
+          = " team"
+      small
+        i.fa.fa-clock-o
+        = activity_time_tag activity.created_at

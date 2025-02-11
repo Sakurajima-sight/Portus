@@ -1,0 +1,38 @@
+aside
+  ul
+    li class="#{active_page?(current_page?(root_path))}"
+      = link_to root_path
+        i[class="fa fa-dashboard"]
+        | Dashboard
+      .list-selected
+    li class="#{active_page?(namespaces_path)}"
+      = link_to namespaces_path
+        i[class="fa fa-ship"]
+        | Namespaces
+      .list-selected
+    li class="#{active_page?(repositories_path)}"
+      = link_to repositories_path
+        i[class="fa fa-archive"]
+        | Repositories
+      .list-selected
+    li class="#{active_page?(teams_path)}"
+      = link_to teams_path
+        i[class="fa fa-users"]
+        | Teams
+      .list-selected
+    - if current_user.admin?
+      li class="#{active_page?(admin_users_path)}"
+        = link_to admin_users_path
+          i[class="fa fa-user"]
+          | Users
+        .list-selected
+      li class="#{active_page?(admin_registries_path)}"
+        = link_to admin_registries_path
+          i[class="fa fa-server"]
+          | Registries
+        .list-selected
+    li class="#{active_page?(help_index_path)}"
+      = link_to help_index_path
+        i[class="fa fa-life-ring"]
+        | Help
+      .list-selected

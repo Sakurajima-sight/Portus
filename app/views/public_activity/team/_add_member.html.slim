@@ -1,0 +1,35 @@
+- owner = activity_owner(activity)
+- action = activity_action(owner, "added")
+- team = activity_team(activity)
+
+li
+  .activitie-container
+    .activity-type.add-member-team
+      i.fa.fa-user-plus
+    .user-image
+      = user_image_tag(activity.owner)
+    .description
+      h6
+        strong
+          - if activity.recipient
+            = "#{owner} #{action} user '#{activity.recipient.display_username}' "
+          - else
+            - if activity.parameters[:team_user]
+              = "#{owner} #{action} user '#{activity.parameters[:team_user]}' "
+            - else
+              = "#{owner} #{action} a user "
+
+        | with role&nbsp;
+        strong
+          = activity.parameters[:role]
+        |  to the&nbsp;
+
+        - if activity.trackable_type == "Team"
+          = link_to team, activity.trackable
+        - else
+          strong
+            = team
+        |  team
+      small
+        i.fa.fa-clock-o
+        = activity_time_tag activity.created_at
