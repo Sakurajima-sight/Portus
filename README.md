@@ -20,11 +20,6 @@ cd Portus
 docker-compose up -d
 ```
 
-## compile Webpack assets
-
-```
-docker-compose run portus bundle exec rake webpack:compile
-```
 
 ## Verifying the Portus services
 

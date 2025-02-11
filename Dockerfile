@@ -8,10 +8,10 @@ EXPOSE 3000
 
 WORKDIR /srv/Portus
 COPY Gemfile* ./
-VOLUME ["/srv/Portus"]
+# VOLUME ["/srv/Portus"]
  
-RUN export http_proxy="http://192.168.0.108:7890" && \
-    export https_proxy="http://192.168.0.108:7890" && \
+RUN export http_proxy="http://192.168.0.107:7890" && \
+    export https_proxy="http://192.168.0.107:7890" && \
     apt-get update && apt-get install -y libmariadb-dev postgresql-server-dev-all nodejs libxml2-dev libxslt1-dev git npm g++ --fix-missing && \
     apt-get remove --purge golang-go && \
     npm install -g phantomjs-prebuilt && \ 
@@ -29,4 +29,10 @@ RUN export http_proxy="http://192.168.0.108:7890" && \
     export http_proxy="" && \
     export https_proxy=""
 
-# ADD . .
+ADD . .
+
+RUN export http_proxy="http://192.168.0.107:7890" && \
+    export https_proxy="http://192.168.0.107:7890" && \
+    npm install && \
+    export http_proxy="" && \
+    export https_proxy=""   

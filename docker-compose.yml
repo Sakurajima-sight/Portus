@@ -25,7 +25,7 @@ services:
     links:
       - db
     volumes:
-      - /mnt/c/Users/ROG/Desktop/Portus-ruby2.7/Portus:/srv/Portus
+      - .:/srv/Portus
 
   background:
     image: opensuse/portus:development
@@ -44,7 +44,7 @@ services:
       - PORTUS_DB_PASSWORD=portus
       - PORTUS_DB_POOL=5
     volumes:
-      - /mnt/c/Users/ROG/Desktop/Portus-ruby2.7/Portus:/srv/Portus
+      - .:/srv/Portus
     links:
       - db
 
@@ -53,7 +53,7 @@ services:
     command: sh /srv/Portus/examples/development/compose/bootstrap-webpack
     working_dir: /srv/Portus
     volumes:
-      - /mnt/c/Users/ROG/Desktop/Portus-ruby2.7/Portus:/srv/Portus
+      - .:/srv/Portus
 
   clair:
     image: opensuse/clair:latest  
