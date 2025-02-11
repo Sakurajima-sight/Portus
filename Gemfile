@@ -2,6 +2,7 @@
 
 source "https://rubygems.org"
 
+gem 'mimemagic', git: 'https://github.com/nicksterious/mimemagic-0.3.3.git', branch: 'main'
 gem "active_record_union"
 gem "base32"
 gem "devise"

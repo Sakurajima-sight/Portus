@@ -1,4 +1,4 @@
-version: '2'
+version: '2.1'
 
 services:
   portus:
@@ -7,7 +7,7 @@ services:
     command: bundle exec rails runner /srv/Portus/examples/development/compose/init.rb
     environment:
       - PORTUS_MACHINE_FQDN_VALUE=${MACHINE_FQDN}
-      - PORTUS_PUMA_HOST=0.0.0.0:3000
+      - PORTUS_PUMA_HOST=0.0.0.0:7800
       - PORTUS_CHECK_SSL_USAGE_ENABLED=false
       - PORTUS_SECURITY_CLAIR_SERVER=http://clair:6060
 
@@ -19,13 +19,13 @@ services:
 
       - RAILS_SERVE_STATIC_FILES=true
     ports:
-      - 3000:3000
+      - 7800:7800
     depends_on:
       - db
     links:
       - db
     volumes:
-      - .:/srv/Portus
+      - /mnt/c/Users/ROG/Desktop/Portus-ruby2.7/Portus:/srv/Portus
 
   background:
     image: opensuse/portus:development
@@ -44,20 +44,23 @@ services:
       - PORTUS_DB_PASSWORD=portus
       - PORTUS_DB_POOL=5
     volumes:
-      - .:/srv/Portus
+      - /mnt/c/Users/ROG/Desktop/Portus-ruby2.7/Portus:/srv/Portus
     links:
       - db
 
   webpack:
-    image: kkarczmarczyk/node-yarn:latest
-    command: bash /srv/Portus/examples/development/compose/bootstrap-webpack
+    image: jitesoft/node-yarn:latest
+    command: sh /srv/Portus/examples/development/compose/bootstrap-webpack
     working_dir: /srv/Portus
     volumes:
-      - .:/srv/Portus
+      - /mnt/c/Users/ROG/Desktop/Portus-ruby2.7/Portus:/srv/Portus
 
   clair:
-    image: quay.io/coreos/clair:v2.0.2
+    image: opensuse/clair:latest  
     restart: unless-stopped
+    environment:
+      - http_proxy=
+      - https_proxy=
     depends_on:
       - postgres
     links:
@@ -70,7 +73,7 @@ services:
     command: [-config, /clair.yml]
 
   db:
-    image: library/mariadb:10.0.23
+    image: library/mariadb:10.5.28-focal
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
     environment:
       MYSQL_ROOT_PASSWORD: portus
@@ -81,7 +84,7 @@ services:
       POSTGRES_PASSWORD: portus
 
   registry:
-    image: library/registry:2.6
+    image: library/registry:latest
     environment:
       REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY: /registry_data
       REGISTRY_STORAGE_DELETE_ENABLED: "true"
@@ -91,13 +94,13 @@ services:
 
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /etc/docker/registry/portus.crt
 
-      REGISTRY_AUTH_TOKEN_REALM: http://${MACHINE_FQDN}:3000/v2/token
+      REGISTRY_AUTH_TOKEN_REALM: http://${MACHINE_FQDN}:7800/v2/token
       REGISTRY_AUTH_TOKEN_SERVICE: ${MACHINE_FQDN}:${REGISTRY_PORT}
       REGISTRY_AUTH_TOKEN_ISSUER: ${MACHINE_FQDN}
 
       REGISTRY_NOTIFICATIONS_ENDPOINTS: >
         - name: portus
-          url: http://${MACHINE_FQDN}:3000/v2/webhooks/events
+          url: http://${MACHINE_FQDN}:7800/v2/webhooks/events
           timeout: 2000ms
           threshold: 5
           backoff: 1s
