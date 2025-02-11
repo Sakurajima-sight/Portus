@@ -3,7 +3,7 @@ FROM ruby:2.6.10-bullseye
 LABEL maintainer="SUSE Containers Team <containers@suse.com>"
 
 ENV COMPOSE=1
-EXPOSE 7800
+EXPOSE 3000
 
 
 WORKDIR /srv/Portus

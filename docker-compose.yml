@@ -7,7 +7,7 @@ services:
     command: bundle exec rails runner /srv/Portus/examples/development/compose/init.rb
     environment:
       - PORTUS_MACHINE_FQDN_VALUE=${MACHINE_FQDN}
-      - PORTUS_PUMA_HOST=0.0.0.0:7800
+      - PORTUS_PUMA_HOST=0.0.0.0:3000
       - PORTUS_CHECK_SSL_USAGE_ENABLED=false
       - PORTUS_SECURITY_CLAIR_SERVER=http://clair:6060
 
@@ -19,7 +19,7 @@ services:
 
       - RAILS_SERVE_STATIC_FILES=true
     ports:
-      - 7800:7800
+      - 3000:3000
     depends_on:
       - db
     links:
@@ -94,13 +94,13 @@ services:
 
       REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE: /etc/docker/registry/portus.crt
 
-      REGISTRY_AUTH_TOKEN_REALM: http://${MACHINE_FQDN}:7800/v2/token
+      REGISTRY_AUTH_TOKEN_REALM: http://${MACHINE_FQDN}:3000/v2/token
       REGISTRY_AUTH_TOKEN_SERVICE: ${MACHINE_FQDN}:${REGISTRY_PORT}
       REGISTRY_AUTH_TOKEN_ISSUER: ${MACHINE_FQDN}
 
       REGISTRY_NOTIFICATIONS_ENDPOINTS: >
         - name: portus
-          url: http://${MACHINE_FQDN}:7800/v2/webhooks/events
+          url: http://${MACHINE_FQDN}:3000/v2/webhooks/events
           timeout: 2000ms
           threshold: 5
           backoff: 1s
